@@ -1,45 +1,31 @@
-//---------------------------------------------------------------------------------------------------------------------------------
-// File: SQLServerResource.java
-//
-//
-// Microsoft JDBC Driver for SQL Server
-// Copyright(c) Microsoft Corporation
-// All rights reserved.
-// MIT License
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files(the ""Software""), 
-//  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
-//  and / or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions :
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-// THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
-//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
-//  IN THE SOFTWARE.
-//---------------------------------------------------------------------------------------------------------------------------------
-
+/*
+ * Microsoft JDBC Driver for SQL Server
+ * 
+ * Copyright(c) Microsoft Corporation All rights reserved.
+ * 
+ * This program is made available under the terms of the MIT License. See the LICENSE file in the project root for more information.
+ */
 
 package com.microsoft.sqlserver.jdbc;
-import java.util.*;
+
+import java.util.ListResourceBundle;
 
 /**
  * A simple resource bundle containing the strings for localizing.
  *
  */
-public final class SQLServerResource extends ListResourceBundle
-{
-	static String getResource(String key)
-	{
-		return ((ListResourceBundle) SQLServerResource.getBundle("com.microsoft.sqlserver.jdbc.SQLServerResource")).getString(key);
-	}
+public final class SQLServerResource extends ListResourceBundle {
+    static String getResource(String key) {
+        return SQLServerResource.getBundle("com.microsoft.sqlserver.jdbc.SQLServerResource").getString(key);
+    }
 
-	protected Object[][]  getContents()
-	{
-		return contents;
-	}
+    protected Object[][] getContents() {
+        return contents;
+    }
 
-	// the keys must be prefixed with R_ to denote they are resource strings and their names should follow the camelCasing
-	// convention and be descriptive
-	static final Object[][] contents =
-		{ 
+    // the keys must be prefixed with R_ to denote they are resource strings and their names should follow the camelCasing
+    // convention and be descriptive
+    static final Object[][] contents = {
 				// LOCALIZE THIS
 				{"R_timedOutBeforeRouting", "The timeout expired before connecting to the routing destination."},
 				{"R_invalidRoutingInfo", "Unexpected routing information received. Please check your connection properties and SQL Server configuration."},
@@ -194,11 +180,17 @@ public final class SQLServerResource extends ListResourceBundle
 				{"R_packetSizePropertyDescription", "The network packet size used to communicate with SQL Server."},
 				{"R_encryptPropertyDescription", "Determines if Secure Sockets Layer (SSL) encryption should be used between the client and the server."},
 				{"R_trustServerCertificatePropertyDescription", "Determines if the driver should validate the SQL Server Secure Sockets Layer (SSL) certificate."},
+				{"R_trustStoreTypePropertyDescription", "Type of trust store type like JKS / PKCS12 or any FIPS Provider KeyStore implementation Type."},
 				{"R_trustStorePropertyDescription", "The path to the certificate trust store file."},
 				{"R_trustStorePasswordPropertyDescription", "The password used to check the integrity of the trust store data."},
 				{"R_hostNameInCertificatePropertyDescription", "The host name to be used when validating the SQL Server Secure Sockets Layer (SSL) certificate."},
 				{"R_sendTimeAsDatetimePropertyDescription", "Determines whether to use the SQL Server datetime data type to send java.sql.Time values to the database."},
 				{"R_TransparentNetworkIPResolutionPropertyDescription", "Determines whether to use the Transparent Network IP Resolution feature."},
+				{"R_queryTimeoutPropertyDescription", "The number of seconds to wait before the database reports a query time-out."},
+				{"R_socketTimeoutPropertyDescription", "The number of milliseconds to wait before the java.net.SocketTimeoutException is raised."},
+				{"R_serverPreparedStatementDiscardThresholdPropertyDescription", "The threshold for when to close discarded prepare statements on the server (calling a batch of sp_unprepares). A value of 1 or less will cause sp_unprepare to be called immediately on PreparedStatment close."},
+				{"R_enablePrepareOnFirstPreparedStatementCallPropertyDescription", "This setting specifies whether a prepared statement is prepared (sp_prepexec) on first use (property=true) or on second after first calling sp_executesql (property=false)."},
+				{"R_gsscredentialPropertyDescription", "Impersonated GSS Credential to access SQL Server."}, 
 				{"R_noParserSupport", "An error occurred while instantiating the required parser. Error: \"{0}\""},
 				{"R_writeOnlyXML", "Cannot read from this SQLXML instance. This instance is for writing data only."},
 				{"R_dataHasBeenReadXML", "Cannot read from this SQLXML instance. The data has already been read."},
@@ -344,7 +336,7 @@ public final class SQLServerResource extends ListResourceBundle
 				{"R_TVPEmptyMetadata", "There are not enough fields in the Structured type. Structured types must have at least one field."},
 				{"R_TVPInvalidValue", "The value provided for Table-Valued Parameter {0} is not valid. Only SQLServerDataTable, ResultSet and ISQLServerDataRecord objects are supported."},
 				{"R_TVPInvalidColumnValue", "Input data is not in correct format."},
-				{"R_FedAuthOnNonWindows","Azure Active Directory is only supported on Windows operating systems."},
+				{"R_AADIntegratedOnNonWindows","ActiveDirectoryIntegrated is only supported on Windows operating systems."},
 				{"R_TVPSortOrdinalGreaterThanFieldCount", "The sort ordinal {0} on field {1} exceeds the total number of fields."},
 				{"R_TVPMissingSortOrderOrOrdinal", "The sort order and ordinal must either both be specified, or neither should be specified (SortOrder.Unspecified and -1). The values given were: order = {0}, ordinal = {1}."},
 				{"R_TVPDuplicateSortOrdinal", "The sort ordinal {0} was specified twice."},
@@ -370,6 +362,7 @@ public final class SQLServerResource extends ListResourceBundle
 				{"R_keyStoreAuthenticationPropertyDescription", "The name that identifies a key store."},
 				{"R_keyStoreSecretPropertyDescription", "The authentication secret or information needed to locate the secret."},
 				{"R_keyStoreLocationPropertyDescription", "The key store location."},
+				{"R_fipsProviderPropertyDescription", "FIPS Provider."},
 				{"R_keyStoreAuthenticationNotSet", "\"keyStoreAuthentication\" connection string keyword must be specified,  if \"{0}\" is specified."},
 				{"R_keyStoreSecretOrLocationNotSet", "Both \"keyStoreSecret\" and \"keyStoreLocation\" must be set, if \"keyStoreAuthentication=JavaKeyStorePassword\" has been specified in the connection string."},
 				{"R_certificateStoreInvalidKeyword", "Cannot set \"keyStoreSecret\", if \"keyStoreAuthentication=CertificateStore\" has been specified in the connection string."},
@@ -377,12 +370,15 @@ public final class SQLServerResource extends ListResourceBundle
 				{"R_certificateStorePlatformInvalid", "Cannot set \"keyStoreAuthentication=CertificateStore\" on a Windows operating system."},
 				{"R_invalidKeyStoreFile", "Cannot parse \"{0}\". Either the file format is not valid or the password is not correct."}, // for JKS/PKCS
 				{"R_invalidCEKCacheTtl", "Invalid column encryption key cache time-to-live specified. The columnEncryptionKeyCacheTtl value cannot be negative and timeUnit can only be DAYS, HOURS, MINUTES or SECONDS."}, 
-
-				// END OF MATERIAL TO LOCALIZE
-
 				{"R_sendTimeAsDateTimeForAE", "Use sendTimeAsDateTime=false with Always Encrypted."}, 
 				{"R_invalidServerCursorForTVP" , "Use different Connection for source ResultSet and prepared query, if selectMethod is set to cursor for Table-Valued Parameter."},
-
-		};
+				{"R_TVPnotWorkWithSetObjectResultSet" , "setObject() with ResultSet is not supported for Table-Valued Parameter. Please use setStructured()"},
+				{"R_invalidQueryTimeout", "The queryTimeout {0} is not valid."},
+				{"R_invalidSocketTimeout", "The socketTimeout {0} is not valid."},
+				{"R_fipsPropertyDescription", "Determines if enable FIPS compilant SSL connection between the client and the server."},
+				{"R_invalidFipsConfig", "Could not enable FIPS."},
+				{"R_invalidFipsEncryptConfig", "Could not enable FIPS due to either encrypt is not true or using trusted certificate settings."},
+				{"R_invalidFipsProviderConfig", "Could not enable FIPS due to invalid FIPSProvider or TrustStoreType."},
+				{"R_serverPreparedStatementDiscardThreshold", "The serverPreparedStatementDiscardThreshold {0} is not valid."},
+    };
 }
-
